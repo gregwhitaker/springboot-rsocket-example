@@ -39,15 +39,12 @@ public class RandomNumberController {
      */
     @MessageMapping("randomNumbers")
     public Flux<NumberResponse> randomNumbers(NumberRequest numberRequest) {
-        return Flux.from(new Publisher<NumberResponse>() {
-            @Override
-            public void subscribe(Subscriber<? super NumberResponse> s) {
-                for (int i = 0; i < numberRequest.getNumberOfNumbers(); i++) {
-                    s.onNext(new NumberResponse(RAND.nextInt()));
-                }
-
-                s.onComplete();
+        return Flux.from(s -> {
+            for (int i = 0; i < numberRequest.getNumberOfNumbers(); i++) {
+                s.onNext(new NumberResponse(RAND.nextInt()));
             }
+
+            s.onComplete();
         });
     }
 }
