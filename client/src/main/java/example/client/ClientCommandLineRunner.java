@@ -1,5 +1,6 @@
 package example.client;
 
+import example.model.LetterRequest;
 import example.model.LetterResponse;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -9,8 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.messaging.rsocket.RSocketRequester;
 import org.springframework.stereotype.Component;
-
-import java.util.function.Consumer;
+import reactor.core.publisher.Flux;
 
 /**
  * Runs the client application.
@@ -27,29 +27,12 @@ public class ClientCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        letterRSocketRequester.route("randomLetters")
-                .retrieveFlux(LetterResponse.class)
-                .subscribe(new Subscriber<LetterResponse>() {
-                    @Override
-                    public void onSubscribe(Subscription s) {
-                        LOG.info("Requesting 10 letters...");
-                        s.request(10);
-                    }
+        Flux<LetterResponse> randomLetters = letterRSocketRequester.route("randomLetters")
+                .data(new LetterRequest(10))
+                .retrieveFlux(LetterResponse.class);
 
-                    @Override
-                    public void onNext(LetterResponse letterResponse) {
-                        LOG.info(Character.toString(letterResponse.getLetter()));
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        LOG.error("Error during processing", t);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        LOG.info("DONE");
-                    }
-                });
+        randomLetters.subscribe(letterResponse -> {
+            System.out.println(letterResponse.getLetter());
+        });
     }
 }

@@ -1,7 +1,7 @@
 package example.service.letter.controller;
 
+import example.model.LetterRequest;
 import example.model.LetterResponse;
-import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
@@ -37,27 +37,13 @@ public class RandomLetterController {
      * @return a {@link Flux} of random letters
      */
     @MessageMapping("randomLetters")
-    public Flux<LetterResponse> randomLetters() {
-        return Flux.from(s -> s.onSubscribe(new Subscription() {
-            @Override
-            public void request(long n) {
-                for (int i = 0; i < n; i++) {
-                    LetterResponse letterResponse = new LetterResponse((char) (RAND.nextInt(26) + 'a'));
-                    s.onNext(letterResponse);
-                }
-
-                s.onComplete();
+    public Flux<LetterResponse> randomLetters(LetterRequest letterRequest) {
+        return Flux.from(s -> {
+            for (int i = 0; i < letterRequest.getNumberOfLetters(); i++) {
+                s.onNext(new LetterResponse((char) (RAND.nextInt(26) + 'a')));
             }
 
-            @Override
-            public void cancel() {
-                LOG.info("Stream Cancelled - randomLetters");
-            }
-        }));
-    }
-
-    @MessageExceptionHandler
-    public Mono<Exception> exceptionHandler(Exception e) {
-        return Mono.just(e);
+            s.onComplete();
+        });
     }
 }

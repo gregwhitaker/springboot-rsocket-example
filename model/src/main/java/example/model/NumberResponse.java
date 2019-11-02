@@ -2,7 +2,9 @@ package example.model;
 
 public class NumberResponse {
 
-    private final int number;
+    private int number;
+
+    public NumberResponse() {}
 
     public NumberResponse(final int number) {
         this.number = number;

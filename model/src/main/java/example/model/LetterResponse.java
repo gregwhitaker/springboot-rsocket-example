@@ -2,7 +2,9 @@ package example.model;
 
 public class LetterResponse {
 
-    private final char letter;
+    private char letter;
+
+    public LetterResponse() {}
 
     public LetterResponse(final char letter) {
         this.letter = letter;
