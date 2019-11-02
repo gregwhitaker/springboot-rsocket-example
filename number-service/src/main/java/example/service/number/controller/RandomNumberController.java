@@ -1,17 +1,17 @@
 package example.service.number.controller;
 
+import example.model.NumberRequest;
 import example.model.NumberResponse;
-import org.reactivestreams.Subscription;
+import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Random;
-import java.util.function.Supplier;
 
 /**
  * Controller responsible for generating random numbers.
@@ -38,26 +38,16 @@ public class RandomNumberController {
      * @return a {@link Flux} of random numbers.
      */
     @MessageMapping("randomNumbers")
-    public Flux<NumberResponse> randomNumbers() {
-        return Flux.from(s -> s.onSubscribe(new Subscription() {
+    public Flux<NumberResponse> randomNumbers(NumberRequest numberRequest) {
+        return Flux.from(new Publisher<NumberResponse>() {
             @Override
-            public void request(long n) {
-                for (int i = 0; i < n; i++) {
+            public void subscribe(Subscriber<? super NumberResponse> s) {
+                for (int i = 0; i < numberRequest.getNumberOfNumbers(); i++) {
                     s.onNext(new NumberResponse(RAND.nextInt()));
                 }
 
                 s.onComplete();
             }
-
-            @Override
-            public void cancel() {
-                LOG.info("Stream Cancelled - randomNumbers");
-            }
-        }));
-    }
-
-    @MessageExceptionHandler
-    public Mono<Exception> exceptionHandler(Exception e) {
-        return Mono.just(e);
+        });
     }
 }
