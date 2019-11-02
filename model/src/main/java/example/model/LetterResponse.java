@@ -2,13 +2,13 @@ package example.model;
 
 public class LetterResponse {
 
-    private char letter;
+    private final char letter;
+
+    public LetterResponse(final char letter) {
+        this.letter = letter;
+    }
 
     public char getLetter() {
         return letter;
-    }
-
-    public void setLetter(char letter) {
-        this.letter = letter;
     }
 }

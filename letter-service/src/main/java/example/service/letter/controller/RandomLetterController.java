@@ -1,5 +1,6 @@
 package example.service.letter.controller;
 
+import example.model.LetterResponse;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +27,8 @@ public class RandomLetterController {
      * @return a {@link Mono} of a random letter
      */
     @MessageMapping("randomLetter")
-    public Mono<String> randomLetter() {
-        return Mono.fromSupplier(() -> {
-            char c = (char) (RAND.nextInt(26) + 'a');
-            return Character.toString(c);
-        });
+    public Mono<LetterResponse> randomLetter() {
+        return Mono.fromSupplier(() -> new LetterResponse((char) (RAND.nextInt(26) + 'a')));
     }
 
     /**
@@ -39,13 +37,13 @@ public class RandomLetterController {
      * @return a {@link Flux} of random letters
      */
     @MessageMapping("randomLetters")
-    public Flux<String> randomLetters() {
+    public Flux<LetterResponse> randomLetters() {
         return Flux.from(s -> s.onSubscribe(new Subscription() {
             @Override
             public void request(long n) {
                 for (int i = 0; i < n; i++) {
-                    char c = (char) (RAND.nextInt(26) + 'a');
-                    s.onNext(Character.toString(c));
+                    LetterResponse letterResponse = new LetterResponse((char) (RAND.nextInt(26) + 'a'));
+                    s.onNext(letterResponse);
                 }
 
                 s.onComplete();
