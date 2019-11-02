@@ -39,9 +39,15 @@ public class RandomLetterController {
     public Flux<LetterResponse> randomLetters(LetterRequest letterRequest) {
         return Flux.from(s -> {
             for (int i = 0; i < letterRequest.getNumberOfLetters(); i++) {
-                s.onNext(new LetterResponse((char) (RAND.nextInt(26) + 'a')));
+                char c = (char) (RAND.nextInt(26) + 'a');
+
+                LOG.info("Generated Character: {}", c);
+
+                s.onNext(new LetterResponse(c));
             }
 
+            LOG.info("Generated `{}` Characters", letterRequest.getNumberOfLetters());
+            
             s.onComplete();
         });
     }
