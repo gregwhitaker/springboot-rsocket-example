@@ -2,4 +2,5 @@ rootProject.name = 'springboot-rsocket-example'
 include 'number-service'
 include 'letter-service'
 include 'client'
+include 'model'
 
