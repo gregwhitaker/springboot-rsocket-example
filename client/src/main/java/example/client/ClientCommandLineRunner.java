@@ -1,5 +1,6 @@
 package example.client;
 
+import example.model.LetterResponse;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
@@ -27,8 +28,8 @@ public class ClientCommandLineRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         letterRSocketRequester.route("randomLetters")
-                .retrieveFlux(String.class)
-                .subscribe(new Subscriber<String>() {
+                .retrieveFlux(LetterResponse.class)
+                .subscribe(new Subscriber<LetterResponse>() {
                     @Override
                     public void onSubscribe(Subscription s) {
                         LOG.info("Requesting 10 letters...");
@@ -36,18 +37,18 @@ public class ClientCommandLineRunner implements CommandLineRunner {
                     }
 
                     @Override
-                    public void onNext(String s) {
-                        LOG.info(s);
+                    public void onNext(LetterResponse letterResponse) {
+                        LOG.info(Character.toString(letterResponse.getLetter()));
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        LOG.error("An error occured during processing", t);
+                        LOG.error("Error during processing", t);
                     }
 
                     @Override
                     public void onComplete() {
-                        LOG.info("Done");
+                        LOG.info("DONE");
                     }
                 });
     }

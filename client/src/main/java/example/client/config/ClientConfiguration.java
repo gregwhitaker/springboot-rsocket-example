@@ -17,7 +17,7 @@ public class ClientConfiguration {
     @Bean
     public RSocket letterRSocket() {
         return RSocketFactory.connect()
-                .mimeType(MetadataExtractor.ROUTE_KEY, MimeTypeUtils.TEXT_PLAIN_VALUE)
+                .dataMimeType(MimeTypeUtils.APPLICATION_JSON_VALUE)
                 .frameDecoder(PayloadDecoder.ZERO_COPY)
                 .transport(TcpClientTransport.create(7001))
                 .start()
@@ -27,7 +27,7 @@ public class ClientConfiguration {
     @Bean
     public RSocket numberRSocket() {
         return RSocketFactory.connect()
-                .mimeType(MetadataExtractor.ROUTE_KEY, MimeTypeUtils.TEXT_PLAIN_VALUE)
+                .dataMimeType(MimeTypeUtils.APPLICATION_JSON_VALUE)
                 .frameDecoder(PayloadDecoder.ZERO_COPY)
                 .transport(TcpClientTransport.create(7002))
                 .start()
@@ -36,11 +36,11 @@ public class ClientConfiguration {
 
     @Bean
     public RSocketRequester letterRSocketRequester(RSocketStrategies rSocketStrategies) {
-        return RSocketRequester.wrap(letterRSocket(), MimeTypeUtils.TEXT_PLAIN, MimeTypeUtils.TEXT_PLAIN, rSocketStrategies);
+        return RSocketRequester.wrap(letterRSocket(), MimeTypeUtils.APPLICATION_JSON, MimeTypeUtils.APPLICATION_JSON, rSocketStrategies);
     }
 
     @Bean
     public RSocketRequester numberRSocketRequester(RSocketStrategies rSocketStrategies) {
-        return RSocketRequester.wrap(numberRSocket(), MimeTypeUtils.TEXT_PLAIN, MimeTypeUtils.TEXT_PLAIN, rSocketStrategies);
+        return RSocketRequester.wrap(numberRSocket(), MimeTypeUtils.APPLICATION_JSON, MimeTypeUtils.APPLICATION_JSON, rSocketStrategies);
     }
 }
