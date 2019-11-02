@@ -39,8 +39,14 @@ public class RandomNumberController {
     public Flux<NumberResponse> randomNumbers(NumberRequest numberRequest) {
         return Flux.from(s -> {
             for (int i = 0; i < numberRequest.getNumberOfNumbers(); i++) {
-                s.onNext(new NumberResponse(RAND.nextInt()));
+                int num = RAND.nextInt();
+
+                LOG.info("Generated Number: {}", num);
+
+                s.onNext(new NumberResponse(num));
             }
+
+            LOG.info("Generated `{}` Numbers", numberRequest.getNumberOfNumbers());
 
             s.onComplete();
         });
