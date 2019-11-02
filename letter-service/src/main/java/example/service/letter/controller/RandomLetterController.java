@@ -47,7 +47,7 @@ public class RandomLetterController {
             }
 
             LOG.info("Generated `{}` Characters", letterRequest.getNumberOfLetters());
-            
+
             s.onComplete();
         });
     }
