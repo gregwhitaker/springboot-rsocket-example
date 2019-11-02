@@ -35,12 +35,12 @@ public class ClientCommandLineRunner implements CommandLineRunner {
                 .data(new NumberRequest(10))
                 .retrieveFlux(NumberResponse.class);
 
-        randomLetters.subscribe(letterResponse -> {
-            LOG.info("Letter Received: {}", letterResponse.getLetter());
-        }, Throwable::printStackTrace);
+        randomLetters
+                .doOnComplete(() -> LOG.info("Letters Done!"))
+                .subscribe(letterResponse -> LOG.info("Letter Received: {}", letterResponse.getLetter()), Throwable::printStackTrace);
 
-        randomNumbers.subscribe(numberResponse -> {
-            LOG.info("Number Received: {}", numberResponse.getNumber());
-        }, Throwable::printStackTrace);
+        randomNumbers
+                .doOnComplete(() -> LOG.info("Numbers Done!"))
+                .subscribe(numberResponse -> LOG.info("Number Received: {}", numberResponse.getNumber()), Throwable::printStackTrace);
     }
 }

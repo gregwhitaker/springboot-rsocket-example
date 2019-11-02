@@ -2,14 +2,23 @@ package example.service.letter.controller;
 
 import example.model.LetterRequest;
 import example.model.LetterResponse;
+import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SynchronousSink;
+import sun.management.resources.agent;
 
+import java.time.Duration;
 import java.util.Random;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * Controller responsible for generating random letters.
@@ -37,18 +46,13 @@ public class RandomLetterController {
      */
     @MessageMapping("randomLetters")
     public Flux<LetterResponse> randomLetters(LetterRequest letterRequest) {
-        return Flux.from(s -> {
-            for (int i = 0; i < letterRequest.getNumberOfLetters(); i++) {
-                char c = (char) (RAND.nextInt(26) + 'a');
+        return Flux.range(1, letterRequest.getNumberOfLetters())
+                .map(i -> {
+                    char c = (char) (RAND.nextInt(26) + 'a');
 
-                LOG.info("Generated Character: {}", c);
+                    LOG.info("Generated Letter: {}", c);
 
-                s.onNext(new LetterResponse(c));
-            }
-
-            LOG.info("Generated `{}` Characters", letterRequest.getNumberOfLetters());
-
-            s.onComplete();
-        });
+                    return new LetterResponse(c);
+                });
     }
 }

@@ -37,18 +37,13 @@ public class RandomNumberController {
      */
     @MessageMapping("randomNumbers")
     public Flux<NumberResponse> randomNumbers(NumberRequest numberRequest) {
-        return Flux.from(s -> {
-            for (int i = 0; i < numberRequest.getNumberOfNumbers(); i++) {
-                int num = RAND.nextInt();
+        return Flux.range(1, numberRequest.getNumberOfNumbers())
+                .map(i -> {
+                    int num = RAND.nextInt();
 
-                LOG.info("Generated Number: {}", num);
+                    LOG.info("Generated Number: {}", num);
 
-                s.onNext(new NumberResponse(num));
-            }
-
-            LOG.info("Generated `{}` Numbers", numberRequest.getNumberOfNumbers());
-
-            s.onComplete();
-        });
+                    return new NumberResponse(num);
+                });
     }
 }
