@@ -1,6 +1,9 @@
 # springboot-rsocket-example
 An example of building Spring Boot services using RSocket as the communication protocol.
 
+The example contains two services which generate random numbers and letters. The client application calls the services and
+streams back the randomly generated data for display in the console.
+
 ## Building the Example
 Run the following command to build the example:
 
@@ -19,7 +22,35 @@ Follow the steps below to run the example:
         
 3. In a new terminal, run the following command to start the `client`:
 
-        ./gradlew :client:bootRun
+            ./gradlew :client:bootRun
+        
+    If successful, you will see numbers and letters generated in the console:
+    
+        2019-11-02 14:03:22.231  INFO 6001 --- [           main] example.client.Application               : Started Application in 1.058 seconds (JVM running for 1.33)
+        2019-11-02 14:03:22.381  INFO 6001 --- [actor-tcp-nio-2] example.client.ClientCommandLineRunner   : Number Received: 828324521
+        2019-11-02 14:03:22.381  INFO 6001 --- [actor-tcp-nio-1] example.client.ClientCommandLineRunner   : Letter Received: y
+        2019-11-02 14:03:22.382  INFO 6001 --- [actor-tcp-nio-2] example.client.ClientCommandLineRunner   : Number Received: -1445318175
+        2019-11-02 14:03:22.382  INFO 6001 --- [actor-tcp-nio-1] example.client.ClientCommandLineRunner   : Letter Received: p
+        2019-11-02 14:03:22.383  INFO 6001 --- [actor-tcp-nio-2] example.client.ClientCommandLineRunner   : Number Received: 647963529
+        2019-11-02 14:03:22.383  INFO 6001 --- [actor-tcp-nio-1] example.client.ClientCommandLineRunner   : Letter Received: q
+        2019-11-02 14:03:22.383  INFO 6001 --- [actor-tcp-nio-2] example.client.ClientCommandLineRunner   : Number Received: -1716932859
+        2019-11-02 14:03:22.383  INFO 6001 --- [actor-tcp-nio-1] example.client.ClientCommandLineRunner   : Letter Received: o
+        2019-11-02 14:03:22.383  INFO 6001 --- [actor-tcp-nio-2] example.client.ClientCommandLineRunner   : Number Received: -801833868
+        2019-11-02 14:03:22.383  INFO 6001 --- [actor-tcp-nio-1] example.client.ClientCommandLineRunner   : Letter Received: f
+        2019-11-02 14:03:22.384  INFO 6001 --- [actor-tcp-nio-2] example.client.ClientCommandLineRunner   : Number Received: -799458252
+        2019-11-02 14:03:22.384  INFO 6001 --- [actor-tcp-nio-1] example.client.ClientCommandLineRunner   : Letter Received: t
+        2019-11-02 14:03:22.384  INFO 6001 --- [actor-tcp-nio-2] example.client.ClientCommandLineRunner   : Number Received: 719756754
+        2019-11-02 14:03:22.384  INFO 6001 --- [actor-tcp-nio-1] example.client.ClientCommandLineRunner   : Letter Received: v
+        2019-11-02 14:03:22.384  INFO 6001 --- [actor-tcp-nio-2] example.client.ClientCommandLineRunner   : Number Received: -735566079
+        2019-11-02 14:03:22.384  INFO 6001 --- [actor-tcp-nio-1] example.client.ClientCommandLineRunner   : Letter Received: w
+        2019-11-02 14:03:22.384  INFO 6001 --- [actor-tcp-nio-2] example.client.ClientCommandLineRunner   : Number Received: 401775378
+        2019-11-02 14:03:22.384  INFO 6001 --- [actor-tcp-nio-1] example.client.ClientCommandLineRunner   : Letter Received: d
+        2019-11-02 14:03:22.385  INFO 6001 --- [actor-tcp-nio-2] example.client.ClientCommandLineRunner   : Number Received: 794028778
+        2019-11-02 14:03:22.385  INFO 6001 --- [actor-tcp-nio-2] example.client.ClientCommandLineRunner   : Numbers Done!
+        2019-11-02 14:03:22.385  INFO 6001 --- [actor-tcp-nio-1] example.client.ClientCommandLineRunner   : Letter Received: z
+        2019-11-02 14:03:22.385  INFO 6001 --- [actor-tcp-nio-1] example.client.ClientCommandLineRunner   : Letters Done!
+    
+
         
 ## Bugs and Feedback
 For bugs, questions, and discussions please use the [Github Issues](https://github.com/gregwhitaker/springboot-rsocket-example/issues).
