@@ -22,7 +22,7 @@ Follow the steps below to run the example:
         
 3. In a new terminal, run the following command to start the `client`:
 
-            ./gradlew :client:bootRun
+        ./gradlew :client:bootRun
         
     If successful, you will see numbers and letters generated in the console:
     
